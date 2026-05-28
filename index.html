@@ -1,303 +1,253 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Controle - Coroa de Flores</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f5f7;
-      margin: 0;
-      padding: 20px;
-      color: #222;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-      color: #2c3e50;
-    }
-
-    .subtitulo {
-      text-align: center;
-      color: #666;
-      margin-bottom: 25px;
-    }
-
-    .resumo {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .card {
-      flex: 1;
-      min-width: 140px;
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 12px;
-      text-align: center;
-      border: 1px solid #e2e2e2;
-    }
-
-    .card strong {
-      display: block;
-      font-size: 24px;
-      margin-top: 5px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e5e5;
-      text-align: left;
-    }
-
-    th {
-      background: #2c3e50;
-      color: #fff;
-    }
-
-    tr.pago {
-      background: #eafaf0;
-    }
-
-    tr.pendente {
-      background: #fff7e6;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(1.4);
-      cursor: pointer;
-    }
-
-    .status {
-      font-weight: bold;
-      padding: 6px 10px;
-      border-radius: 20px;
-      display: inline-block;
-      font-size: 13px;
-    }
-
-    .status-pago {
-      background: #2ecc71;
-      color: white;
-    }
-
-    .status-pendente {
-      background: #f39c12;
-      color: white;
-    }
-
-    .botoes {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      padding: 12px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-    }
-
-    .btn-exportar {
-      background: #2980b9;
-    }
-
-    .btn-limpar {
-      background: #c0392b;
-    }
-
-    .observacao {
-      margin-top: 20px;
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-    }
-
-    @media (max-width: 600px) {
-      th, td {
-        font-size: 14px;
-        padding: 10px 6px;
-      }
-
-      .container {
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle - Coroa de Flores</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f3f5f7;margin:0;padding:20px;color:#222}
+.container{max-width:1000px;margin:auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+h1{text-align:center;margin-bottom:5px;color:#2c3e50}
+.subtitulo{text-align:center;color:#666;margin-bottom:25px}
+.resumo{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.card{flex:1;min-width:140px;background:#f8f9fa;padding:15px;border-radius:12px;text-align:center;border:1px solid #e2e2e2}
+.card strong{display:block;font-size:24px;margin-top:5px}
+.form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;background:#f8f9fa;padding:15px;border-radius:12px}
+input{padding:11px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+input.nome{flex:2;min-width:220px}
+input.valor{width:120px}
+button{border:none;padding:11px 14px;border-radius:9px;cursor:pointer;font-weight:bold;color:white}
+.btn-add{background:#27ae60}
+.btn-exportar{background:#2980b9}
+.btn-limpar{background:#c0392b}
+.btn-editar{background:#f39c12}
+.btn-excluir{background:#e74c3c}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #e5e5e5;text-align:left}
+th{background:#2c3e50;color:#fff}
+tr.pago{background:#eafaf0}
+tr.pendente{background:#fff7e6}
+.check{text-align:center}
+input[type=checkbox]{transform:scale(1.3);cursor:pointer}
+.status{font-weight:bold;padding:6px 10px;border-radius:20px;font-size:13px;display:inline-block}
+.status-pago{background:#2ecc71;color:white}
+.status-pendente{background:#f39c12;color:white}
+.botoes{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.obs{text-align:center;margin-top:18px;font-size:13px;color:#777}
+@media(max-width:700px){
+  table{font-size:13px}
+  th,td{padding:8px 5px}
+  .container{padding:14px}
+  button{padding:9px}
+}
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Controle de Pagamento</h1>
-    <div class="subtitulo">
-      Coroa de flores em homenagem ao falecimento da irmã do Dr. Romani
-    </div>
-
-    <div class="resumo">
-      <div class="card">
-        Total
-        <strong id="total">0</strong>
-      </div>
-      <div class="card">
-        Pagaram
-        <strong id="pagos">0</strong>
-      </div>
-      <div class="card">
-        Pendentes
-        <strong id="pendentes">0</strong>
-      </div>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th style="text-align:center;">Pagou?</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="lista"></tbody>
-    </table>
-
-    <div class="botoes">
-      <button class="btn-exportar" onclick="exportarLista()">Copiar resumo</button>
-      <button class="btn-limpar" onclick="limparTudo()">Limpar marcações</button>
-    </div>
-
-    <div class="observacao">
-      As marcações ficam salvas neste aparelho/navegador.
-    </div>
+<div class="container">
+  <h1>Controle de Pagamento</h1>
+  <div class="subtitulo">
+    Coroa de flores em homenagem ao falecimento da irmã do Dr. Romani
   </div>
 
-  <script>
-    const contatos = [
-      "Você",
-      "~Cynthia",
-      "~Paloma",
-      "Maria Cristina Folchi Ger...",
-      "Joao Santa Terra",
-      "Carol Macri",
-      "Renata Sanches",
-      "Antonio Bandeira Neto",
-      "Aline Kleer PJ",
-      "Silvio Codogno",
-      "Priscila PJ Mpsp 91",
-      "Valeria Lima",
-      "Andre Luis Jales",
-      "Gustavo Myazaki",
-      "Pedro PJ",
-      "Fabio Miskulin",
-      "~Daniele",
-      "Herico Destefani",
-      "Paulo Neuber",
-      "HMF Jr Pj Horival"
-    ];
+  <div class="resumo">
+    <div class="card">Total de nomes<strong id="total">0</strong></div>
+    <div class="card">Pagaram<strong id="pagos">0</strong></div>
+    <div class="card">Pendentes<strong id="pendentes">0</strong></div>
+    <div class="card">Total arrecadado<strong id="totalValor">R$ 0,00</strong></div>
+  </div>
 
-    const chaveStorage = "controle_coroa_flores_romani";
+  <div class="form">
+    <input class="nome" id="nome" placeholder="Nome do participante">
+    <input class="valor" id="valor" placeholder="Valor" value="12,00">
+    <button class="btn-add" onclick="adicionar()">Adicionar</button>
+  </div>
 
-    function carregarPagamentos() {
-      return JSON.parse(localStorage.getItem(chaveStorage)) || {};
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Valor</th>
+        <th class="check">Pagou?</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="lista"></tbody>
+  </table>
+
+  <div class="botoes">
+    <button class="btn-exportar" onclick="exportarLista()">Copiar resumo</button>
+    <button class="btn-limpar" onclick="limparTudo()">Limpar tudo</button>
+  </div>
+
+  <div class="obs">As informações ficam salvas neste aparelho/navegador.</div>
+</div>
+
+<script>
+const chaveStorage = "controle_coroa_flores_romani_v2";
+
+const nomesIniciais = [
+  "Você","~Cynthia","~Paloma","Maria Cristina Folchi Ger...","Joao Santa Terra",
+  "Carol Macri","Renata Sanches","Antonio Bandeira Neto","Aline Kleer PJ",
+  "Silvio Codogno","Priscila PJ Mpsp 91","Valeria Lima","Andre Luis Jales",
+  "Gustavo Myazaki","Pedro PJ","Fabio Miskulin","~Daniele",
+  "Herico Destefani","Paulo Neuber","HMF Jr Pj Horival"
+];
+
+function moeda(v){
+  return Number(v || 0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+}
+
+function numero(valor){
+  if(typeof valor === "number") return valor;
+  return Number(String(valor).replace("R$","").replace(".","").replace(",",".").trim()) || 0;
+}
+
+function carregar(){
+  let dados = JSON.parse(localStorage.getItem(chaveStorage));
+  if(!dados){
+    dados = nomesIniciais.map(nome => ({
+      id: Date.now() + Math.random(),
+      nome,
+      valor: 12,
+      pago: false
+    }));
+    salvar(dados);
+  }
+  return dados;
+}
+
+function salvar(dados){
+  localStorage.setItem(chaveStorage, JSON.stringify(dados));
+}
+
+function renderizar(){
+  const dados = carregar();
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  let pagos = 0;
+  let totalValor = 0;
+
+  dados.forEach(item => {
+    if(item.pago){
+      pagos++;
+      totalValor += numero(item.valor);
     }
 
-    function salvarPagamentos(dados) {
-      localStorage.setItem(chaveStorage, JSON.stringify(dados));
-    }
+    const tr = document.createElement("tr");
+    tr.className = item.pago ? "pago" : "pendente";
 
-    function renderizar() {
-      const lista = document.getElementById("lista");
-      const pagamentos = carregarPagamentos();
+    tr.innerHTML = `
+      <td>${item.nome}</td>
+      <td>${moeda(item.valor)}</td>
+      <td class="check">
+        <input type="checkbox" ${item.pago ? "checked" : ""} onchange="alterarPago('${item.id}', this.checked)">
+      </td>
+      <td>
+        <span class="status ${item.pago ? "status-pago" : "status-pendente"}">
+          ${item.pago ? "Pago" : "Pendente"}
+        </span>
+      </td>
+      <td>
+        <button class="btn-editar" onclick="editar('${item.id}')">Editar</button>
+        <button class="btn-excluir" onclick="excluir('${item.id}')">Excluir</button>
+      </td>
+    `;
 
-      lista.innerHTML = "";
+    lista.appendChild(tr);
+  });
 
-      let totalPagos = 0;
+  document.getElementById("total").textContent = dados.length;
+  document.getElementById("pagos").textContent = pagos;
+  document.getElementById("pendentes").textContent = dados.length - pagos;
+  document.getElementById("totalValor").textContent = moeda(totalValor);
+}
 
-      contatos.forEach((nome, index) => {
-        const pago = pagamentos[index] === true;
+function adicionar(){
+  const nome = document.getElementById("nome").value.trim();
+  const valor = numero(document.getElementById("valor").value);
 
-        if (pago) totalPagos++;
+  if(!nome){
+    alert("Informe o nome.");
+    return;
+  }
 
-        const tr = document.createElement("tr");
-        tr.className = pago ? "pago" : "pendente";
+  const dados = carregar();
+  dados.push({
+    id: Date.now() + Math.random(),
+    nome,
+    valor,
+    pago: false
+  });
 
-        tr.innerHTML = `
-          <td>${nome}</td>
-          <td style="text-align:center;">
-            <input type="checkbox" ${pago ? "checked" : ""} onchange="alterarStatus(${index}, this.checked)">
-          </td>
-          <td>
-            <span class="status ${pago ? "status-pago" : "status-pendente"}">
-              ${pago ? "Pago" : "Pendente"}
-            </span>
-          </td>
-        `;
+  salvar(dados);
+  document.getElementById("nome").value = "";
+  document.getElementById("valor").value = "12,00";
+  renderizar();
+}
 
-        lista.appendChild(tr);
-      });
+function alterarPago(id, pago){
+  const dados = carregar();
+  const item = dados.find(x => String(x.id) === String(id));
+  if(item) item.pago = pago;
+  salvar(dados);
+  renderizar();
+}
 
-      document.getElementById("total").textContent = contatos.length;
-      document.getElementById("pagos").textContent = totalPagos;
-      document.getElementById("pendentes").textContent = contatos.length - totalPagos;
-    }
+function editar(id){
+  const dados = carregar();
+  const item = dados.find(x => String(x.id) === String(id));
+  if(!item) return;
 
-    function alterarStatus(index, pago) {
-      const pagamentos = carregarPagamentos();
-      pagamentos[index] = pago;
-      salvarPagamentos(pagamentos);
-      renderizar();
-    }
+  const novoNome = prompt("Editar nome:", item.nome);
+  if(novoNome === null || novoNome.trim() === "") return;
 
-    function limparTudo() {
-      if (confirm("Deseja limpar todas as marcações?")) {
-        localStorage.removeItem(chaveStorage);
-        renderizar();
-      }
-    }
+  const novoValor = prompt("Editar valor:", String(item.valor).replace(".", ","));
+  if(novoValor === null) return;
 
-    function exportarLista() {
-      const pagamentos = carregarPagamentos();
+  item.nome = novoNome.trim();
+  item.valor = numero(novoValor);
 
-      let texto = "Controle de Pagamento - Coroa de Flores Dr. Romani\\n\\n";
+  salvar(dados);
+  renderizar();
+}
 
-      contatos.forEach((nome, index) => {
-        texto += `${pagamentos[index] ? "✅" : "❌"} ${nome} - ${pagamentos[index] ? "Pago" : "Pendente"}\\n`;
-      });
+function excluir(id){
+  if(!confirm("Deseja excluir este nome da lista?")) return;
 
-      navigator.clipboard.writeText(texto).then(() => {
-        alert("Resumo copiado para a área de transferência!");
-      });
-    }
+  let dados = carregar();
+  dados = dados.filter(x => String(x.id) !== String(id));
+  salvar(dados);
+  renderizar();
+}
 
+function limparTudo(){
+  if(confirm("Deseja apagar toda a lista e voltar ao padrão inicial?")){
+    localStorage.removeItem(chaveStorage);
     renderizar();
-  </script>
+  }
+}
+
+function exportarLista(){
+  const dados = carregar();
+  let texto = "Controle de Pagamento - Coroa de Flores Dr. Romani\n\n";
+
+  dados.forEach(item => {
+    texto += `${item.pago ? "✅" : "❌"} ${item.nome} - ${moeda(item.valor)} - ${item.pago ? "Pago" : "Pendente"}\n`;
+  });
+
+  const total = dados.filter(x => x.pago).reduce((s,x) => s + numero(x.valor), 0);
+  texto += `\nTotal arrecadado: ${moeda(total)}`;
+
+  navigator.clipboard.writeText(texto).then(() => {
+    alert("Resumo copiado!");
+  });
+}
+
+renderizar();
+</script>
 
 </body>
 </html>
