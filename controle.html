@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle - Coroa de Flores</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .resumo {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 140px;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #e2e2e2;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e5e5;
+      text-align: left;
+    }
+
+    th {
+      background: #2c3e50;
+      color: #fff;
+    }
+
+    tr.pago {
+      background: #eafaf0;
+    }
+
+    tr.pendente {
+      background: #fff7e6;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.4);
+      cursor: pointer;
+    }
+
+    .status {
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 13px;
+    }
+
+    .status-pago {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .status-pendente {
+      background: #f39c12;
+      color: white;
+    }
+
+    .botoes {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    .btn-exportar {
+      background: #2980b9;
+    }
+
+    .btn-limpar {
+      background: #c0392b;
+    }
+
+    .observacao {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 14px;
+        padding: 10px 6px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Controle de Pagamento</h1>
+    <div class="subtitulo">
+      Coroa de flores em homenagem ao falecimento da irmã do Dr. Romani
+    </div>
+
+    <div class="resumo">
+      <div class="card">
+        Total
+        <strong id="total">0</strong>
+      </div>
+      <div class="card">
+        Pagaram
+        <strong id="pagos">0</strong>
+      </div>
+      <div class="card">
+        Pendentes
+        <strong id="pendentes">0</strong>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th style="text-align:center;">Pagou?</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="lista"></tbody>
+    </table>
+
+    <div class="botoes">
+      <button class="btn-exportar" onclick="exportarLista()">Copiar resumo</button>
+      <button class="btn-limpar" onclick="limparTudo()">Limpar marcações</button>
+    </div>
+
+    <div class="observacao">
+      As marcações ficam salvas neste aparelho/navegador.
+    </div>
+  </div>
+
+  <script>
+    const contatos = [
+      "Você",
+      "~Cynthia",
+      "~Paloma",
+      "Maria Cristina Folchi Ger...",
+      "Joao Santa Terra",
+      "Carol Macri",
+      "Renata Sanches",
+      "Antonio Bandeira Neto",
+      "Aline Kleer PJ",
+      "Silvio Codogno",
+      "Priscila PJ Mpsp 91",
+      "Valeria Lima",
+      "Andre Luis Jales",
+      "Gustavo Myazaki",
+      "Pedro PJ",
+      "Fabio Miskulin",
+      "~Daniele",
+      "Herico Destefani",
+      "Paulo Neuber",
+      "HMF Jr Pj Horival"
+    ];
+
+    const chaveStorage = "controle_coroa_flores_romani";
+
+    function carregarPagamentos() {
+      return JSON.parse(localStorage.getItem(chaveStorage)) || {};
+    }
+
+    function salvarPagamentos(dados) {
+      localStorage.setItem(chaveStorage, JSON.stringify(dados));
+    }
+
+    function renderizar() {
+      const lista = document.getElementById("lista");
+      const pagamentos = carregarPagamentos();
+
+      lista.innerHTML = "";
+
+      let totalPagos = 0;
+
+      contatos.forEach((nome, index) => {
+        const pago = pagamentos[index] === true;
+
+        if (pago) totalPagos++;
+
+        const tr = document.createElement("tr");
+        tr.className = pago ? "pago" : "pendente";
+
+        tr.innerHTML = `
+          <td>${nome}</td>
+          <td style="text-align:center;">
+            <input type="checkbox" ${pago ? "checked" : ""} onchange="alterarStatus(${index}, this.checked)">
+          </td>
+          <td>
+            <span class="status ${pago ? "status-pago" : "status-pendente"}">
+              ${pago ? "Pago" : "Pendente"}
+            </span>
+          </td>
+        `;
+
+        lista.appendChild(tr);
+      });
+
+      document.getElementById("total").textContent = contatos.length;
+      document.getElementById("pagos").textContent = totalPagos;
+      document.getElementById("pendentes").textContent = contatos.length - totalPagos;
+    }
+
+    function alterarStatus(index, pago) {
+      const pagamentos = carregarPagamentos();
+      pagamentos[index] = pago;
+      salvarPagamentos(pagamentos);
+      renderizar();
+    }
+
+    function limparTudo() {
+      if (confirm("Deseja limpar todas as marcações?")) {
+        localStorage.removeItem(chaveStorage);
+        renderizar();
+      }
+    }
+
+    function exportarLista() {
+      const pagamentos = carregarPagamentos();
+
+      let texto = "Controle de Pagamento - Coroa de Flores Dr. Romani\\n\\n";
+
+      contatos.forEach((nome, index) => {
+        texto += `${pagamentos[index] ? "✅" : "❌"} ${nome} - ${pagamentos[index] ? "Pago" : "Pendente"}\\n`;
+      });
+
+      navigator.clipboard.writeText(texto).then(() => {
+        alert("Resumo copiado para a área de transferência!");
+      });
+    }
+
+    renderizar();
+  </script>
+
+</body>
+</html>
